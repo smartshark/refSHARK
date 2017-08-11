@@ -3,7 +3,6 @@ package de.ugoe.cs.smartshark.refshark.util;
 import com.google.common.collect.Lists;
 import com.mongodb.MongoClient;
 import de.ugoe.cs.smartshark.refshark.model.*;
-import de.ugoe.cs.smartshark.refshark.refactoring.RSRefactoring;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
@@ -21,7 +20,6 @@ import java.util.List;
  */
 public class DatabaseContext {
   private static DatabaseContext instance;
-  private final Morphia morphia;
   private final Datastore datastore;
 
   private Project project;
@@ -34,7 +32,7 @@ public class DatabaseContext {
    * according to the specified program arguments.
    */
   private DatabaseContext() {
-    morphia = new Morphia();
+    Morphia morphia = new Morphia();
     morphia.mapPackage("de.ugoe.cs.smartshark.refshark.model");
     datastore = morphia.createDatastore(new MongoClient(), Parameter.getInstance().getDbName());
     parents = Lists.newArrayList();
