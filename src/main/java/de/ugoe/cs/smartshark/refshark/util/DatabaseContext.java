@@ -34,6 +34,8 @@ public class DatabaseContext {
   private DatabaseContext() {
     Morphia morphia = new Morphia();
     morphia.mapPackage("de.ugoe.cs.smartshark.refshark.model");
+    
+    //TODO: create datastore using given parameter (host, port, user, passwd)
     datastore = morphia.createDatastore(new MongoClient(), Parameter.getInstance().getDbName());
     parents = Lists.newArrayList();
     init();
