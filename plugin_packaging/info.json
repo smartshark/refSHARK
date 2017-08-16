@@ -1,7 +1,7 @@
 {
     "name": "refSHARK",
     "author": "Daniel Honsel",
-    "version": "0.0.1",
+    "version": "0.10",
     "plugin_type": "rev",
     "linux_libraries": [
         "git", 
@@ -10,8 +10,7 @@
     "created_collections": [
 		{
 			"name": "refactoring",
-			"shard_key": [{"commit_id": 1}],
-            "unique": true
+			"shard_key": [{"_id": "hashed"}]
 		}
 	],
     "description": "Plugin to get refactorings on revision level.",
@@ -28,6 +27,13 @@
         }
     ],
     "arguments": [
+        {
+            "name": "plugin_path",
+            "required": true,
+            "position": 1,
+            "type": "install",
+            "description": "path to the root folder of the plugin"
+        },
         {
             "name": "plugin_path",
             "required": true,
@@ -99,11 +105,11 @@
             "description": "databse against which users are authenticated"
         },
         {
-            "name": "options",
+            "name": "ssl_enabled",
             "required": false,
             "position": 11,
             "type": "execute",
-            "description": "possible options string"
+            "description": "needs to be set if database uses ssl connection"
         },
         {
             "name": "debug",
@@ -111,13 +117,6 @@
             "position": 12,
             "type": "execute",
             "description": "debug choices (INFO, DEBUG, WARNING, ERROR)"
-        },
-        {
-            "name": "ssl_enabled",
-            "required": false,
-            "position": 13,
-            "type": "execute",
-            "description": "needs to be set if database uses ssl connection"
         }
     ]
 }

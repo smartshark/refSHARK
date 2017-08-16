@@ -5,10 +5,10 @@ NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 cp -R $REPOSITORY_PATH "/dev/shm/$NEW_UUID"
 
-COMMAND="java -jar $PLUGIN_PATH/refSHARK.jar --input /dev/shm/$NEW_UUID --rev $3 --url $4 --db-hostname $5 --db-port $6 --db-database $7"
+COMMAND="java -jar $PLUGIN_PATH/target/refSHARK.jar --input /dev/shm/$NEW_UUID --rev $3 --url $4 --db-hostname $5 --db-port $6 --db-database $7"
 
-if [ ! -z ${4+x} ] && [ ${4} != "None" ]; then
-    COMMAND="$COMMAND --debug ${4}"
+if [ ! -z ${12+x} ] && [ ${12} != "None" ]; then
+    COMMAND="$COMMAND --debug ${12}"
 fi
 
 if [ ! -z ${8+x} ] && [ ${8} != "None" ]; then

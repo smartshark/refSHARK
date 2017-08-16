@@ -99,7 +99,7 @@
 				       "desc": "Points to the code entity state after the rafactoring was applied."
 				    }
  				]
-			},			
+			}			
          ],
          "desc": "Information about found refactorings with references to changed code entity states of changed classes and methods in a revision.",
          "collection_name":"refactoring"
