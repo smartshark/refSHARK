@@ -2,6 +2,8 @@ package de.ugoe.cs.smartshark.refshark.util;
 
 import com.google.common.collect.Lists;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import de.ugoe.cs.smartshark.refshark.model.*;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -9,6 +11,7 @@ import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,11 +35,7 @@ public class DatabaseContext {
    * according to the specified program arguments.
    */
   private DatabaseContext() {
-    Morphia morphia = new Morphia();
-    morphia.mapPackage("de.ugoe.cs.smartshark.refshark.model");
-    
-    //TODO: create datastore using given parameter (host, port, user, passwd)
-    datastore = morphia.createDatastore(new MongoClient(), Parameter.getInstance().getDbName());
+    datastore = createDatastore();
     parents = Lists.newArrayList();
     init();
   }
@@ -241,6 +240,26 @@ public class DatabaseContext {
         .field("commit_id").equal(getCommit().getId());
 
     datastore.delete(refactorings);
+  }
+
+  private Datastore createDatastore() {
+    Morphia morphia = new Morphia();
+    morphia.mapPackage("de.ugoe.cs.smartshark.refshark.model");
+    Datastore datastore = null;
+
+    if (Parameter.getInstance().getUrl().isEmpty() || Parameter.getInstance().getDbPassword().isEmpty()) {
+      datastore = morphia.createDatastore(new MongoClient(Parameter.getInstance().getDbHostname(), Integer.parseInt(Parameter.getInstance().getDbPort())), Parameter.getInstance().getDbName());
+    } else {
+        ServerAddress addr = new ServerAddress(Parameter.getInstance().getDbHostname(), Integer.parseInt(Parameter.getInstance().getDbPort()));
+        List<MongoCredential> credentialsList = Lists.newArrayList();
+        MongoCredential credential = MongoCredential.createCredential(
+            Parameter.getInstance().getDbUser(), Parameter.getInstance().getDbName(), Parameter.getInstance().getDbPassword().toCharArray());
+        credentialsList.add(credential);
+        MongoClient client = new MongoClient(addr, credentialsList);
+        datastore = morphia.createDatastore(client, Parameter.getInstance().getDbName());
+      }
+
+      return datastore;
   }
 
 }
