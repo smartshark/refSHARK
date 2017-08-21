@@ -11,7 +11,7 @@ import org.apache.commons.cli.*;
  */
 public class Parameter {
   private static Parameter instance;
-  final private String version = "0.0.1";
+  final private String version = "0.10";
 
   // required parameter
   private String repoPath;
