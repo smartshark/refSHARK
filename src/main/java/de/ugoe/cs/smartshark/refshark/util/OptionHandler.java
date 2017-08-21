@@ -23,7 +23,7 @@ public class OptionHandler {
   private void initOptions() {
     Option option;
 
-    option = new Option("u", "URL of the project (e.g., https://github.com/smartshark/mecoSHARK). Required.");
+    option = new Option("u", "URL of the project (e.g., https://github.com/smartshark/refSHARK). Required.");
     option.setRequired(false);
     option.setLongOpt("url");
     option.setArgs(1);
