@@ -253,7 +253,7 @@ public class DatabaseContext {
         ServerAddress addr = new ServerAddress(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort());
         List<MongoCredential> credentialsList = Lists.newArrayList();
         MongoCredential credential = MongoCredential.createCredential(
-            Parameter.getInstance().getDbUser(), Parameter.getInstance().getDbName(), Parameter.getInstance().getDbPassword().toCharArray());
+            Parameter.getInstance().getDbUser(), Parameter.getInstance().getDbAuthentication(), Parameter.getInstance().getDbPassword().toCharArray());
         credentialsList.add(credential);
         MongoClient client = new MongoClient(addr, credentialsList);
         datastore = morphia.createDatastore(client, Parameter.getInstance().getDbName());
