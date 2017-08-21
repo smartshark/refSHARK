@@ -248,9 +248,9 @@ public class DatabaseContext {
     Datastore datastore = null;
 
     if (Parameter.getInstance().getUrl().isEmpty() || Parameter.getInstance().getDbPassword().isEmpty()) {
-      datastore = morphia.createDatastore(new MongoClient(Parameter.getInstance().getDbHostname(), Integer.parseInt(Parameter.getInstance().getDbPort())), Parameter.getInstance().getDbName());
+      datastore = morphia.createDatastore(new MongoClient(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort()), Parameter.getInstance().getDbName());
     } else {
-        ServerAddress addr = new ServerAddress(Parameter.getInstance().getDbHostname(), Integer.parseInt(Parameter.getInstance().getDbPort()));
+        ServerAddress addr = new ServerAddress(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort());
         List<MongoCredential> credentialsList = Lists.newArrayList();
         MongoCredential credential = MongoCredential.createCredential(
             Parameter.getInstance().getDbUser(), Parameter.getInstance().getDbName(), Parameter.getInstance().getDbPassword().toCharArray());

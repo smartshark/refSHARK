@@ -28,7 +28,7 @@ public class Parameter {
   private String dbUser;
   private String dbPassword;
   private String dbHostname;
-  private String dbPort;
+  private int dbPort;
   private String dbAuthentication;
 
   // debug parameter
@@ -61,7 +61,7 @@ public class Parameter {
     dbUser = cmd.getOptionValue("U", "");
     dbPassword = cmd.getOptionValue("P", "");
     dbHostname = cmd.getOptionValue("H", "localhost");
-    dbPort = cmd.getOptionValue("p", "27017");
+    dbPort = Integer.parseInt(cmd.getOptionValue("p", "27017"));
     dbAuthentication = cmd.getOptionValue("a", "");
     debugLevel = cmd.getOptionValue("d", "ERROR");
 
@@ -142,7 +142,7 @@ public class Parameter {
     return dbHostname;
   }
 
-  public String getDbPort() {
+  public int getDbPort() {
     if (!isInitialized()) {
       System.out.println("The current parameter instance is not initialized!");
     }
