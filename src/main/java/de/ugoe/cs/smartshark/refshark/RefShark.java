@@ -1,9 +1,12 @@
 package de.ugoe.cs.smartshark.refshark;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import de.ugoe.cs.smartshark.refshark.refactoring.RSRefactoring;
 import de.ugoe.cs.smartshark.refshark.util.DatabaseContext;
 import de.ugoe.cs.smartshark.refshark.util.Parameter;
 import de.ugoe.cs.smartshark.refshark.util.RefactoringFinder;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -18,9 +21,10 @@ public class RefShark {
     Parameter param = Parameter.getInstance();
     param.init(args);
 
+    setLogLevel();
+
     RefactoringFinder rf = new RefactoringFinder();
     List<RSRefactoring> refactorings = rf.findRefactorings();
-
 
     // clear all stored refactorings assigned to this commit
     DatabaseContext.getInstance().clear();
@@ -31,6 +35,30 @@ public class RefShark {
     }
 
   }
+
+  private static void setLogLevel() {
+    Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+    String level = Parameter.getInstance().getDebugLevel();
+
+    switch (level) {
+      case "INFO":
+        root.setLevel(Level.INFO);
+        break;
+      case "DEBUG":
+        root.setLevel(Level.DEBUG);
+        break;
+      case "WARNING":
+        root.setLevel(Level.WARN);
+        break;
+      case "ERROR":
+        root.setLevel(Level.ERROR);
+        break;
+      default:
+        root.setLevel(Level.DEBUG);
+        break;
+    }
+  }
+
 }
 
 
