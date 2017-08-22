@@ -37,7 +37,7 @@ public class RefShark {
   }
 
   private static void setLogLevel() {
-    Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+    Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
     String level = Parameter.getInstance().getDebugLevel();
 
     switch (level) {
