@@ -68,10 +68,4 @@ public class RSRenameMethod extends RSRefactoring {
     return getMethodNameLongPart(methodAfter);
   }
 
-  public void save() {
-    // methodBefore
-    // methodBeforeType
-    // methodAfter
-    // methodAfterType
-  }
 }

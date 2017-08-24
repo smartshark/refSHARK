@@ -30,11 +30,6 @@ public class RSExtractSuperclass extends RSRefactoring {
     return getTypeNameLong(typeOriginAfter);
   }
 
-  public void save() {
-    // TODO: implement me!
-  }
-
-
   /**
    * The method initializes the code entity states of the refactoring.
    * EntityBefore represents the extracted type and EntityAfter represents the

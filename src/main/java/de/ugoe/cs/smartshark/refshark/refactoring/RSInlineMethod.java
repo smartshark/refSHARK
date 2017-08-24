@@ -67,7 +67,4 @@ public class RSInlineMethod extends RSRefactoring {
     return getMethodNameLongPart(dest);
   }
 
-  public void save() {
-
-  }
 }

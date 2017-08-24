@@ -86,7 +86,9 @@ public abstract class RSRefactoring {
   /**
    * Saves the generated <code>Refactoring</code> instance in the mungodb.
    */
-  abstract public void save();
+  public void save() {
+    db.save(dbRefactoring);
+  }
 
   /**
    * Searches the code entity states of the refactoring according to the specialized type.

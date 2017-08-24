@@ -23,11 +23,6 @@ public class RSExtractMethod extends RSRefactoring {
     initStates();
   }
 
-  public void save() {
-    // TODO: implement me!!!
-    //
-  }
-
   /**
    * The method initializes the code entity states of the refactoring.
    * EntityBefore represents the origin method and EntityAfter represents the

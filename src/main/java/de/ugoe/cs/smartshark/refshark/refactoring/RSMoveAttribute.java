@@ -38,11 +38,6 @@ public class RSMoveAttribute extends RSRefactoring {
     return attributeAfter.fullName();
   }
 
-
-  public void save() {
-    db.save(dbRefactoring);
-  }
-
   /**
    * The method initializes the code entity states of the refactoring.
    * EntityBefore represents the attribute before moving and EntityAfter represents the

@@ -31,12 +31,6 @@ public class RSRenameClass extends RSRefactoring {
     return getTypeNameLong(typeAfter);
   }
 
-  public void save() {
-    // TODO: implement me!
-    // typeBefore
-    // typeAfter
-  }
-
   /**
    * The method initializes the code entity states of the refactoring.
    * EntityBefore represents the type before applying the refactoring and
