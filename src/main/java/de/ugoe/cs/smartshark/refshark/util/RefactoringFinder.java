@@ -41,6 +41,7 @@ public class RefactoringFinder {
       foundRefactorings = checkCommit(repository, commit);
     } catch (Exception e) {
       System.err.println(e.getMessage());
+      System.err.println(e.getStackTrace());
     }
 
     return foundRefactorings;

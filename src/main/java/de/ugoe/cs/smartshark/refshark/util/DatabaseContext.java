@@ -1,15 +1,18 @@
 package de.ugoe.cs.smartshark.refshark.util;
 
+import ch.qos.logback.classic.Logger;
 import com.google.common.collect.Lists;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import de.ugoe.cs.smartshark.refshark.RefShark;
 import de.ugoe.cs.smartshark.refshark.model.*;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.List;
  * @author <a href="mailto:dhonsel@informatik.uni-goettingen.de">Daniel Honsel</a>
  */
 public class DatabaseContext {
+  Logger logger = (Logger) LoggerFactory.getLogger("de.ugoe.cs.smartshark.refshark.util.DatabaseContext");
   private static DatabaseContext instance;
   private final Datastore datastore;
 
@@ -59,12 +63,18 @@ public class DatabaseContext {
     final List<VCSystem> vcs = datastore.createQuery(VCSystem.class)
         .field("url").equal(Parameter.getInstance().getUrl())
         .asList();
-    assert vcs.size() == 1;
+    if (vcs.size() != 1) {
+      logger.warn("Found: " + vcs.size() + " instances of VCSystem. Expected 1 instance.");
+    }
     vcSystem = vcs.get(0);
 
     project = datastore.getByKey(Project.class, new Key<Project>(Project.class, "project", vcSystem.getProjectId()));
 
     commit = findCommit(Parameter.getInstance().getCommit());
+
+    if (commit == null) {
+      logger.warn("Could not find commit: " + Parameter.getInstance().getCommit());
+    }
 
     for (String p : commit.getParents()) {
       parents.add(findCommit(p));
@@ -105,7 +115,7 @@ public class DatabaseContext {
     if (commits.size() == 1) {
       return commits.get(0);
     } else {
-      // TODO: consider throwing an exception.
+      logger.debug("Could not find commit: "  + commit.getMessage());
       return null;
     }
   }
@@ -129,7 +139,7 @@ public class DatabaseContext {
     if (ces.size() == 1) {
       return ces.get(0).getId();
     } else {
-      // TODO: consider throwing an exception.
+      logger.debug("Could not find ces for class: " + name + " in commit " + commit.getMessage());
       return null;
     }
   }
@@ -139,7 +149,7 @@ public class DatabaseContext {
    * given commit.
    *
    * @param name The name of the class.
-   * @param c The commit to analyze.
+   * @param c    The commit to analyze.
    * @return The code entity state of the given class name in the given commit.
    */
   public ObjectId findClassEntityState(String name, Commit c) {
@@ -154,7 +164,7 @@ public class DatabaseContext {
     if (ces.size() == 1) {
       return ces.get(0).getId();
     } else {
-      // TODO: consider throwing an exception.
+      logger.debug("Could not find ces for class: " + name + " in commit " + commit.getMessage());
       return null;
     }
   }
@@ -163,9 +173,9 @@ public class DatabaseContext {
    * Searches for the code entity state of the given method name in the
    * given commit.
    *
-   * @param name The name of the method.
+   * @param name             The name of the method.
    * @param classEntityState The class where the method is implemented.
-   * @param c The commit to analyze.
+   * @param c                The commit to analyze.
    * @return The code entity state of the method according to the given parameter.
    */
   public ObjectId findMethodEntityState(String name, ObjectId classEntityState, Commit c) {
@@ -195,9 +205,9 @@ public class DatabaseContext {
    * Searches for the code entity state of the given attribute name in the
    * given commit.
    *
-   * @param name The name of the attribute.
+   * @param name             The name of the attribute.
    * @param classEntityState The class where the attribute is implemented.
-   * @param c The commit to analyze.
+   * @param c                The commit to analyze.
    * @return The code entity state of the attribute according to the given parameter.
    */
   public ObjectId findAttributeEntityState(String name, ObjectId classEntityState, Commit c) {
@@ -218,7 +228,7 @@ public class DatabaseContext {
     if (attributes.size() == 1) {
       return attributes.get(0).getId();
     } else {
-      // TODO: consider throwing an exception.
+      logger.debug("Could not find ces for attribute: " + name + " in commit " + commit.getMessage());
       return null;
     }
   }
@@ -230,6 +240,8 @@ public class DatabaseContext {
    */
   public void save(Refactoring refactoring) {
     datastore.save(refactoring);
+    RefShark.STORED_REFACTORINGS++;
+    logger.debug("Stored refactoring: " + refactoring.getDescription());
   }
 
   /**
@@ -250,16 +262,16 @@ public class DatabaseContext {
     if (Parameter.getInstance().getUrl().isEmpty() || Parameter.getInstance().getDbPassword().isEmpty()) {
       datastore = morphia.createDatastore(new MongoClient(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort()), Parameter.getInstance().getDbName());
     } else {
-        ServerAddress addr = new ServerAddress(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort());
-        List<MongoCredential> credentialsList = Lists.newArrayList();
-        MongoCredential credential = MongoCredential.createCredential(
-            Parameter.getInstance().getDbUser(), Parameter.getInstance().getDbAuthentication(), Parameter.getInstance().getDbPassword().toCharArray());
-        credentialsList.add(credential);
-        MongoClient client = new MongoClient(addr, credentialsList);
-        datastore = morphia.createDatastore(client, Parameter.getInstance().getDbName());
-      }
+      ServerAddress addr = new ServerAddress(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort());
+      List<MongoCredential> credentialsList = Lists.newArrayList();
+      MongoCredential credential = MongoCredential.createCredential(
+          Parameter.getInstance().getDbUser(), Parameter.getInstance().getDbAuthentication(), Parameter.getInstance().getDbPassword().toCharArray());
+      credentialsList.add(credential);
+      MongoClient client = new MongoClient(addr, credentialsList);
+      datastore = morphia.createDatastore(client, Parameter.getInstance().getDbName());
+    }
 
-      return datastore;
+    return datastore;
   }
 
 }

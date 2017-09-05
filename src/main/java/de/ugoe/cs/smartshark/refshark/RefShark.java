@@ -16,12 +16,15 @@ import java.util.List;
  * @author <a href="mailto:dhonsel@informatik.uni-goettingen.de">Daniel Honsel</a>
  */
 public class RefShark {
+  public static int STORED_REFACTORINGS;
 
   public static void main(String[] args) {
     Parameter param = Parameter.getInstance();
     param.init(args);
 
     setLogLevel();
+
+    Logger logger = (Logger) LoggerFactory.getLogger("de.ugoe.cs.smartshark.refshark.RefShark");
 
     RefactoringFinder rf = new RefactoringFinder();
     List<RSRefactoring> refactorings = rf.findRefactorings();
@@ -34,6 +37,10 @@ public class RefShark {
       r.save();
     }
 
+    // some additional output
+    logger.info("Analyzed commit: " + param.getCommit());
+    logger.info("Found: " + refactorings.size() + " refactorings.");
+    logger.info(("Stored " + STORED_REFACTORINGS + " in datastore."));
   }
 
   private static void setLogLevel() {
