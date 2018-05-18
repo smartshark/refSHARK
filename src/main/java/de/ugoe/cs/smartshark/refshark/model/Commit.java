@@ -37,6 +37,8 @@ public class Commit {
   private int committerDateOffset;
   @Property("committer_id")
   private ObjectId committerId;
+  @Property("code_entity_states")
+  private List<ObjectId> codeEntityStates;
 
   public ObjectId getId() {
     return id;
@@ -132,5 +134,13 @@ public class Commit {
 
   public void setCommitterId(ObjectId committerId) {
     this.committerId = committerId;
+  }
+
+  public List<ObjectId> getCodeEntityStates() {
+    return codeEntityStates;
+  }
+
+  public void setCodeEntityStates(List<ObjectId> codeEntityStates) {
+    this.codeEntityStates = codeEntityStates;
   }
 }
