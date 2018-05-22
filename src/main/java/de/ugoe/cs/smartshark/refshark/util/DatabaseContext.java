@@ -14,7 +14,6 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -200,7 +199,6 @@ public class DatabaseContext {
     if (classEntityState == null) {
       return null;
     }
-
     Query<CodeEntityState> cesq = datastore.find(CodeEntityState.class);
 
     if (c.getCodeEntityStates() != null && c.getCodeEntityStates().size() > 0) {
@@ -242,7 +240,6 @@ public class DatabaseContext {
     if (classEntityState == null) {
       return null;
     }
-
     Query<CodeEntityState> attributeStates = datastore.find(CodeEntityState.class);
 
     if (c.getCodeEntityStates() != null && c.getCodeEntityStates().size() > 0) {
