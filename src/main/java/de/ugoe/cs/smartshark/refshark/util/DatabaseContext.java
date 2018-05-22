@@ -129,11 +129,20 @@ public class DatabaseContext {
    */
   public ObjectId findClassEntityState(String name) {
     Query<CodeEntityState> cesq = datastore.find(CodeEntityState.class);
-    cesq.and(
-        cesq.criteria("commit_id").equal(getCommit().getId()),
-        cesq.criteria("ce_type").equal("class"),
-        cesq.criteria("long_name").equal(name)
-    );
+
+    if (getCommit().getCodeEntityStates() != null && getCommit().getCodeEntityStates().size() > 0) {
+      cesq.and(
+          cesq.criteria("_id").in(getCommit().getCodeEntityStates()),
+          cesq.criteria("ce_type").equal("class"),
+          cesq.criteria("long_name").equal(name)
+      );
+    } else {
+      cesq.and(
+          cesq.criteria("commit_id").equal(getCommit().getId()),
+          cesq.criteria("ce_type").equal("class"),
+          cesq.criteria("long_name").equal(name)
+      );
+    }
     final List<CodeEntityState> ces = cesq.asList();
 
     if (ces.size() == 1) {
@@ -154,11 +163,20 @@ public class DatabaseContext {
    */
   public ObjectId findClassEntityState(String name, Commit c) {
     Query<CodeEntityState> cesq = datastore.find(CodeEntityState.class);
-    cesq.and(
-        cesq.criteria("commit_id").equal(c.getId()),
-        cesq.criteria("ce_type").equal("class"),
-        cesq.criteria("long_name").equal(name)
-    );
+
+    if (c.getCodeEntityStates() != null && c.getCodeEntityStates().size() > 0) {
+      cesq.and(
+          cesq.criteria("_id").in(c.getCodeEntityStates()),
+          cesq.criteria("ce_type").equal("class"),
+          cesq.criteria("long_name").equal(name)
+      );
+    } else {
+      cesq.and(
+          cesq.criteria("commit_id").equal(c.getId()),
+          cesq.criteria("ce_type").equal("class"),
+          cesq.criteria("long_name").equal(name)
+      );
+    }
     final List<CodeEntityState> ces = cesq.asList();
 
     if (ces.size() == 1) {
@@ -184,11 +202,21 @@ public class DatabaseContext {
     }
 
     Query<CodeEntityState> cesq = datastore.find(CodeEntityState.class);
-    cesq.and(
-        cesq.criteria("commit_id").equal(c.getId()),
-        cesq.criteria("ce_type").equal("method"),
-        cesq.criteria("ce_parent_id").equal(classEntityState)
-    );
+
+    if (c.getCodeEntityStates() != null && c.getCodeEntityStates().size() > 0) {
+      cesq.and(
+          cesq.criteria("_id").in(c.getCodeEntityStates()),
+          cesq.criteria("ce_type").equal("method"),
+          cesq.criteria("ce_parent_id").equal(classEntityState)
+      );
+    } else {
+      cesq.and(
+          cesq.criteria("commit_id").equal(c.getId()),
+          cesq.criteria("ce_type").equal("method"),
+          cesq.criteria("ce_parent_id").equal(classEntityState)
+      );
+    }
+
     final List<CodeEntityState> methods = cesq.asList();
 
     CodeEntityState method = null;
@@ -216,13 +244,24 @@ public class DatabaseContext {
     }
 
     Query<CodeEntityState> attributeStates = datastore.find(CodeEntityState.class);
-    attributeStates.and(
-        attributeStates.criteria("commit_id").equal(c.getId()),
-        attributeStates.criteria("ce_type").equal("attribute"),
-        attributeStates.criteria("ce_parent_id").equal(classEntityState),
-        attributeStates.criteria("long_name").startsWith(name.replace("#", "."))
 
-    );
+    if (c.getCodeEntityStates() != null && c.getCodeEntityStates().size() > 0) {
+      attributeStates.and(
+          attributeStates.criteria("_id").in(c.getCodeEntityStates()),
+          attributeStates.criteria("ce_type").equal("attribute"),
+          attributeStates.criteria("ce_parent_id").equal(classEntityState),
+          attributeStates.criteria("long_name").startsWith(name.replace("#", "."))
+
+      );
+    } else {
+      attributeStates.and(
+          attributeStates.criteria("commit_id").equal(c.getId()),
+          attributeStates.criteria("ce_type").equal("attribute"),
+          attributeStates.criteria("ce_parent_id").equal(classEntityState),
+          attributeStates.criteria("long_name").startsWith(name.replace("#", "."))
+
+      );
+    }
     final List<CodeEntityState> attributes = attributeStates.asList();
 
     if (attributes.size() == 1) {
