@@ -63,20 +63,33 @@ public class DatabaseContext {
         .field("url").equal(Parameter.getInstance().getUrl())
         .asList();
     if (vcs.size() != 1) {
-      logger.warn("Found: " + vcs.size() + " instances of VCSystem. Expected 1 instance.");
+      System.err.println("Could not find VCSystem: " + Parameter.getInstance().getUrl());
+      System.exit(1);
+    } else {
+      vcSystem = vcs.get(0);
     }
-    vcSystem = vcs.get(0);
 
     project = datastore.getByKey(Project.class, new Key<Project>(Project.class, "project", vcSystem.getProjectId()));
+
+    if (project == null) {
+      System.err.println("Could not find project to given VCSystem.");
+      System.exit(1);
+    }
 
     commit = findCommit(Parameter.getInstance().getCommit());
 
     if (commit == null) {
-      logger.warn("Could not find commit: " + Parameter.getInstance().getCommit());
+      System.err.println("Could not find commit to given revision hash: " + Parameter.getInstance().getCommit());
+      System.exit(1);
     }
 
     for (String p : commit.getParents()) {
       parents.add(findCommit(p));
+    }
+
+    if (parents.size() == 0) {
+      System.err.println("Could not find any parent commit.");
+      System.exit(1);
     }
   }
 
