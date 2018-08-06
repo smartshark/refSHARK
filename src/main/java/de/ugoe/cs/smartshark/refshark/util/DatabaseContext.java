@@ -114,7 +114,7 @@ public class DatabaseContext {
     if (commits.size() == 1) {
       return commits.get(0);
     } else {
-      logger.debug("Could not find commit: "  + commit.getMessage());
+      logger.warn("Could not find commit: "  + hash);
       return null;
     }
   }
