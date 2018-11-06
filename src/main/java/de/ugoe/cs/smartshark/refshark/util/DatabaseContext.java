@@ -88,7 +88,7 @@ public class DatabaseContext {
     }
 
     if (parents.size() == 0) {
-      System.err.println("Could not find any parent commit.");
+      logger.warn("Could not find any parent commit.");
       System.exit(1);
     }
   }
