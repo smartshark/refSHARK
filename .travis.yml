@@ -1,0 +1,18 @@
+language: java
+sudo: false
+
+script: 
+  mvn clean verify
+  mvn package
+    
+after_success:
+  cd plugin_packaging && ./build_plugin.sh && cd ..
+
+deploy:
+  provider: releases
+  api_key: ${GH_TOKEN}
+  file: "plugin_packaging/refSHARK_plugin.tar"
+  skip_cleanup: true
+  on:
+    repo: smartshark/refSHARK
+    tags: true
