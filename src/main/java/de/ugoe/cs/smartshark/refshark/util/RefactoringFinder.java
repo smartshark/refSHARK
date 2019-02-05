@@ -8,7 +8,6 @@ import refdiff.core.api.GitService;
 import refdiff.core.rm2.model.refactoring.SDRefactoring;
 import refdiff.core.util.GitServiceImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,11 +50,16 @@ public class RefactoringFinder {
 
   private List<RSRefactoring> checkCommit(Repository repository, String commit) {
     RefDiff refDiff = new RefDiff();
-    List<SDRefactoring> refactorings = refDiff.detectAtCommit(repository, commit);
     List<RSRefactoring> foundRefactorings = Lists.newArrayList();
+    List<SDRefactoring> refactorings;
+
+    try {
+       refactorings = refDiff.detectAtCommit(repository, commit);
+    } catch (RuntimeException e) {
+      return foundRefactorings;
+    }
 
     for (SDRefactoring refactoring : refactorings) {
-
       switch (refactoring.getRefactoringType()) {
         case EXTRACT_OPERATION:
           RSExtractMethod em = new RSExtractMethod(refactoring);
