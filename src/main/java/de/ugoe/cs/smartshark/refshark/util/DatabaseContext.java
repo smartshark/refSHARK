@@ -305,7 +305,7 @@ public class DatabaseContext {
 
   private Datastore createDatastore() {
     Morphia morphia = new Morphia();
-    morphia.mapPackage("de.ugoe.cs.smartshark.refshark.model");
+    morphia.mapPackage("de.ugoe.cs.smartshark.model");
     Datastore datastore = null;
 
     try {
