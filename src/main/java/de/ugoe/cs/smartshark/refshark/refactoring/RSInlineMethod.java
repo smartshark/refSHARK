@@ -1,7 +1,7 @@
 package de.ugoe.cs.smartshark.refshark.refactoring;
 
-import de.ugoe.cs.smartshark.refshark.model.Commit;
-import de.ugoe.cs.smartshark.refshark.model.RefactoringState;
+import de.ugoe.cs.smartshark.model.Commit;
+import de.ugoe.cs.smartshark.model.RefactoringState;
 import org.bson.types.ObjectId;
 import refdiff.core.rm2.model.SDMethod;
 import refdiff.core.rm2.model.refactoring.SDRefactoring;

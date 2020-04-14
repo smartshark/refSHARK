@@ -6,7 +6,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import de.ugoe.cs.smartshark.refshark.RefShark;
-import de.ugoe.cs.smartshark.refshark.model.*;
+import de.ugoe.cs.smartshark.model.*;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
@@ -29,7 +29,7 @@ public class DatabaseContext {
   private final Datastore datastore;
 
   private Project project;
-  private VCSystem vcSystem;
+  private VCSSystem vcSystem;
   private Commit commit;
   private List<Commit> parents;
 
@@ -59,7 +59,7 @@ public class DatabaseContext {
    * Initializes the instance with commit specific information.
    */
   private void init() {
-    final List<VCSystem> vcs = datastore.createQuery(VCSystem.class)
+    final List<VCSSystem> vcs = datastore.createQuery(VCSSystem.class)
         .field("url").equal(Parameter.getInstance().getUrl())
         .asList();
     if (vcs.size() != 1) {
@@ -98,7 +98,7 @@ public class DatabaseContext {
     return project;
   }
 
-  public VCSystem getVcSystem() {
+  public VCSSystem getVcSystem() {
     return vcSystem;
   }
 

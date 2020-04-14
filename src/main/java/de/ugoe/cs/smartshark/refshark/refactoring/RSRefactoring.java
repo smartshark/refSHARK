@@ -1,6 +1,6 @@
 package de.ugoe.cs.smartshark.refshark.refactoring;
 
-import de.ugoe.cs.smartshark.refshark.model.Refactoring;
+import de.ugoe.cs.smartshark.model.Refactoring;
 import de.ugoe.cs.smartshark.refshark.util.Common;
 import de.ugoe.cs.smartshark.refshark.util.DatabaseContext;
 import refdiff.core.rm2.model.SDMethod;
