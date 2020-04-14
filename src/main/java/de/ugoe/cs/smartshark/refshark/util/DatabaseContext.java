@@ -3,8 +3,8 @@ package de.ugoe.cs.smartshark.refshark.util;
 import ch.qos.logback.classic.Logger;
 import com.google.common.collect.Lists;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.MongoClientURI;
+import de.ugoe.cs.smartshark.Utils;
 import de.ugoe.cs.smartshark.refshark.RefShark;
 import de.ugoe.cs.smartshark.model.*;
 import org.bson.types.ObjectId;
@@ -312,13 +312,15 @@ public class DatabaseContext {
       if (Parameter.getInstance().getUrl().isEmpty() || Parameter.getInstance().getDbPassword().isEmpty()) {
         datastore = morphia.createDatastore(new MongoClient(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort()), Parameter.getInstance().getDbName());
       } else {
-        ServerAddress addr = new ServerAddress(Parameter.getInstance().getDbHostname(), Parameter.getInstance().getDbPort());
-        List<MongoCredential> credentialsList = Lists.newArrayList();
-        MongoCredential credential = MongoCredential.createCredential(
-            Parameter.getInstance().getDbUser(), Parameter.getInstance().getDbAuthentication(), Parameter.getInstance().getDbPassword().toCharArray());
-        credentialsList.add(credential);
-        MongoClient client = new MongoClient(addr, credentialsList);
-        datastore = morphia.createDatastore(client, Parameter.getInstance().getDbName());
+        MongoClientURI uri = new MongoClientURI(Utils.createMongoDBURI(
+                Parameter.getInstance().getDbUser(),
+                Parameter.getInstance().getDbPassword(),
+                Parameter.getInstance().getDbHostname(),
+                Integer.toString(Parameter.getInstance().getDbPort()),
+                Parameter.getInstance().getDbAuthentication(),
+                Parameter.getInstance().isSsl()));
+        MongoClient mongoClient = new MongoClient(uri);
+        datastore = morphia.createDatastore(mongoClient, Parameter.getInstance().getDbName());
       }
     } catch (Exception e) {
       System.err.println(e.getMessage());
