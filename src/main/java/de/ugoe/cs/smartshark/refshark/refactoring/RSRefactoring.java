@@ -104,6 +104,7 @@ public abstract class RSRefactoring {
     dbRefactoring.setCommitId(db.getCommit().getId());
     dbRefactoring.setType(Common.refactoringTypeToString(refactoring.getRefactoringType()));
     dbRefactoring.setDescription(refactoring.toString());
+    dbRefactoring.setDetectionTool("refDiff");
   }
 
 }
