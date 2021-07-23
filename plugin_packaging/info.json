@@ -1,7 +1,7 @@
 {
     "name": "refSHARK",
     "author": "Daniel Honsel",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "plugin_type": "rev",
     "linux_libraries": [
         "git", 
