@@ -18,6 +18,12 @@
             {  
                "type":"StringType",
                "logical_type":"Name",
+               "field_name":"detection_tool",
+               "desc": "Name of the refactoring detection tool, e.g., refDiff, rMiner"
+            },
+            {  
+               "type":"StringType",
+               "logical_type":"Name",
                "field_name":"type",
                "desc": "Name of the refactoring type."
             },
